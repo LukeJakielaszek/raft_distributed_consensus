@@ -1,0 +1,3 @@
+import rpyc
+
+con = rpyc.connect('localhost', 5001)
