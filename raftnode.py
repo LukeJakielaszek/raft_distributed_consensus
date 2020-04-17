@@ -8,16 +8,12 @@ import os
 import threading
 import logging
 
-
-#logging.basicConfig(filename="newfile.log", 
-#                    format='%(asctime)s %(message)s', 
-#                    filemode='w')
 def record_factory(*args, **kwargs):
     record = old_factory(*args, **kwargs)
     record.custom_attribute = "Node " + sys.argv[2]
     return record
 
-logging.basicConfig(filename="logfile.log", format="%(asctime)s - %(custom_attribute)s - %(message)s", filemode='w')
+logging.basicConfig(filename="logfile_" + sys.argv[2] + '.log', format="%(asctime)s - %(custom_attribute)s - %(message)s", filemode='w')
 old_factory = logging.getLogRecordFactory()
 logging.setLogRecordFactory(record_factory)
 logger=logging.getLogger()
@@ -54,7 +50,6 @@ class RaftNode(rpyc.Service):
     active_leader = None
     term_file = None
     voted_for = None
-    vote_nodes = []
     active_election = False
     
     '''
@@ -70,21 +65,19 @@ class RaftNode(rpyc.Service):
         self.term_file = "./tmp/" + str(node_id) + "_term.txt"
 
         #get most up to date term or defaul to zero
-        if os.path.exists(term_file):
-            print('getting term from file')
+        if os.path.exists(self.term_file):
+            logging.debug('getting term from file')
             with open(self.term_file, "r") as tf:
                 self.term = int(tf.readline())
         else:
-            print('Creating term file')
+            logging.debug('Creating term file')
             self.term = 0
-            with open(term_file, "w") as tf:
+            with open(self.term_file, "w") as tf:
                 tf.write(str(self.term))
 
-        print("Current Term : [" + str(self.term) + "]")
+        logging.debug("Current Term : [" + str(self.term) + "]")
 
         # initialize locks
-        self.leader_lock = threading.Lock()
-        self.term_lock = threading.Lock()
         self.state_lock = threading.Lock()
 
         # initialize timers
@@ -119,13 +112,17 @@ class RaftNode(rpyc.Service):
                         self.other_nodes_meta[i]["port"] = cur_port
                         self.other_nodes_meta[i]["id"] = i
                         self.other_nodes_meta[i]['con'] = None
-
+        logging.debug("Initialization complete")
+                        
     # increment term by 1 and store in the term file
     def update_term(self, new_term=None):
+        old = self.term
         if(new_term == None):
             self.term += 1
         else:
             self.term = new_term
+
+        logging.debug('Updating term - old : ' + str(old) + '| new : ' + str(self.term))
             
         with open(self.term_file, "w") as tf:
             tf.write(str(self.term))
@@ -147,33 +144,52 @@ class RaftNode(rpyc.Service):
     # resets the internal clock
     def reset_timer(self):
         self.cur_clock = time.time()
-
+        
     def isLeader(self):
         return(self.state == self.LEADER_STATE)
     
     # continuously run
     def run_server(self):
+        logging.debug("Running server")
         # run indefinitely
         while True:
-            with self.state_lock:
-                if self.active_election:
-                    if self.voted_for == self.node_id:
-                        # multicast to others
-                        self.multicast_request()
-            else:
-                if(self.isLeader()):
-                    # if leader, send a heartbeat
-                    self.heartbeat()
-                else:
-                    # check for timeout in follower or candidate
-                    if(self.is_timeout()):
-                        # the timer timedout
-                        print("Timout Detected")
-                        self.become_candidate()
+            self.state_lock.acquire()
             
+            if(self.isLeader()):
+                # if leader, send a heartbeat
+                self.heartbeat()
+            else:
+                # check for timeout in follower or candidate
+                if(self.is_timeout()):
+                    # the timer timedout
+                    logging.debug("Timout Detected")
+                    self.become_candidate()
+                elif self.state == self.CANDIDATE_STATE:
+                    # if candidate in active election multicast to others
+                    self.multicast_request()
+                    
+            # attempt to release the lock
+            try:
+                self.state_lock.release()
+            except:
+                pass
 
+            time.sleep(.5)
+            
     # multicast rpc
     def multicast_request(self):
+        logging.debug('Starting request_vote multicast')
+        # store current state information
+        new_term = self.term
+        old_term = new_term
+        new_state = self.state
+        active_election = True
+        vote_count = self.vote_count
+        self.state_lock.release()
+
+        # assume nothing is wrong
+        invalid = False
+
         # for every node
         for node in self.other_nodes_meta.values():
             # get their ip
@@ -184,46 +200,88 @@ class RaftNode(rpyc.Service):
             try:
                 # send an requestvote rpc
                 con = rpyc.connect(addr, port)
-                valid, new_term = con.root.request_vote(self.term, self.node_id)
+                valid, cur_term = con.root.request_vote(new_term, self.node_id)
                 con.close()
 
                 # if our term is less than the highest, we cannot be the leader anymore
                 # we are now followers
-                if not valid and new_term > self.term:
-                    self.update_term(new_term)
-                    self.state = self.FOLLOWER_STATE
-                    self.reset_timer()
-                    break
-                elif not node_id in vote_nodes:
-                    vote_nodes.append(node_id)
-
-                if(len(vote_nodes) >= self.threshold):
-                    # Election complete. I am leader. Reset myself
-                    print('Election completed. ' + str(self.node_id) + ' is leader')
-                    self.state = self.LEADER_STATE
-                    self.vote_nodes = []
-                    self.reset_timer()
-                    self.active_election = False
+                if not valid:
+                    if(new_term > cur_term):
+                        new_term = cur_term
+                        new_state = self.FOLLOWER_STATE
+                        invalid = True
+                        break
+                else:
+                    # node votes for us
+                    vote_count += 1
+                    if(vote_count >= self.threshold):
+                        # I am leader.
+                        new_state = self.LEADER_STATE
+                        active_election = False
+                        break
             except:
                 print("Could not connect to [" + addr + ':' + str(port) + "]")
+                
+        with self.state_lock:
+            # if another node did not call an rpc on us with multicasting a heartbeat
+            if self.term == old_term:
+                logging.debug('No RPC called on us during requestVote multicast')
+                self.print_self()                
+                # if another node has higher term
+                if(invalid):
+                    # revert to follower
+                    logging.debug('\trequestVote RPC failed. Reverting to follower')
+                    self.update_term(new_term)
+                    self.state = new_state
+                    self.reset_timer()
+                    self.reset_votes()
+                    self.print_self()
+                    self.active_election = False
+                    self.print_self()
+                # if i am leader
+                elif(not active_election):
+                    # declare self as leader
+                    logging.debug('\trequestVote RPC success. I won election. I am leader')
+                    logging.debug('Vote count [' + str(vote_count) +
+                                  '] Threshold [' + str(self.threshold) + ']')
+                    self.update_term(new_term)
+                    self.state = new_state
+                    self.reset_timer()
+                    self.reset_votes()
+                    self.update_term()
+                    self.active_election = False
+                    self.print_self()
+                else:
+                    logging.debug('\trequestVote RPC success. Continuing election')
+                    if(self.vote_count == vote_count):
+                        logging.debug('\tNode already voted')
+                    self.vote_count = vote_count
+                    self.print_self()
+            else:
+                logging.debug('RPC called on us during requestVote multicast. Cancelling result')
+                self.print_self()
 
+                
+    def print_self(self):
+        logging.debug("\t\tNode : " + str(self.node_id) + "- Term : "
+                      + str(self.term) + " - State : " + str(self.state) + " - VCount : " + str(self.vote_count))
+        
+    # reset the votes
+    def reset_votes(self):
+        self.voted_for = None
+        self.vote_count = 0
         
     # transitions our state to a candidate
     def become_candidate(self):
-        print('Becoming a candidate')
+        logging.debug('Becoming a candidate')
         
         # update term & state
         self.update_term()
         self.state = self.CANDIDATE_STATE
         
         # display the current term
-        print("Current Term : " + str(self.term))
+        logging.debug("Current Term : " + str(self.term))
 
-        # perform leader election
-        self.init_leader_election()
-
-    # perform the leader election algorithm
-    def init_leader_election(self):
         # vote for self
         self.vote_count = 1
         self.voted_for = self.node_id
@@ -231,40 +289,57 @@ class RaftNode(rpyc.Service):
         # reset election timer
         self.reset_timer()
         self.active_election = True
-                
+        
     # returns true if our state is leader
     def exposed_is_leader(self):
         return(self.isLeader())
 
     def exposed_request_vote(self, can_term, can_id):
+        logging.debug('RequestVote RPC ' + str(can_term) + " " + str(can_id))
         # acquire the state lock
         with self.state_lock:
             # if our term is greater than the candidate
             if can_term < self.term:
+                logging.debug('\tReject: Candidate ' + str(can_id))
+
                 # reject the candidate
                 return(False, self.term)
+            # if can term is larger than our own
             elif(can_term > self.term):
                 # convert to follower of candidate
-                self.active_election = True
+                logging.debug('\tAccept: Candidate term larger - Voting for ' + str(can_id))
+
                 self.update_term(can_term)
                 self.state = self.FOLLOWER_STATE
                 self.voted_for = can_id
                 return(True, self.term)
+            # if we have equal terms
             else:
-                # candidate is part of the election
-                self.active_election = True
-                if self.voted_for is None or self.voted_for is can_id:
+                # candidate is part of the current election
+                if self.voted_for is None:
                     # we have not yet voted for anyone or voted for the candidate already
+                    logging.debug('\tAccept: Participant Voting for ' + str(can_id))
                     self.voted_for = can_id
                     
                     # vote for candidate
                     return(True, self.term)
                 else:
+                    logging.debug('\tReject: I have already voted ' + str(can_id))
                     # we have already voted
                     return(False, self.term)
                 
     # multicast append entries to all nodes
     def heartbeat(self):
+        logging.debug('Starting Heartbeat')
+        # store current state information
+        new_term = self.term
+        old_term = new_term
+        new_state = self.state
+        self.state_lock.release()
+
+        # assume nothing is wrong
+        invalid = False
+            
         # for every node
         for node in self.other_nodes_meta.values():
             # get their ip
@@ -275,44 +350,62 @@ class RaftNode(rpyc.Service):
             try:
                 # send an appendentries rpc
                 con = rpyc.connect(addr, port)
-                valid, new_term = con.root.append_entries(self.term, self.node_id)
+                valid, cur_term = con.root.append_entries(new_term, self.node_id)
                 con.close()
 
                 # if our term is less than the highest, we cannot be the leader anymore
                 # we are now followers
                 if not valid:
-                    self.update_term(new_term)
-                    self.state = self.FOLLOWER_STATE
-                    self.reset_timer()
+                    new_term = cur_term
+                    new_state = self.FOLLOWER_STATE
+                    invalid = True
                     break
             except:
                 print("Could not connect to [" + addr + ':' + str(port) + "]")
 
+        # securely update this nodes state
+        with self.state_lock:
+            # if another node did not call an rpc on us with multicasting a heartbeat
+            if self.term == old_term:
+                logging.debug('No RPC called on us during heartbeat')
+                # if we should be followers
+                if invalid:
+                    logging.debug('Heartbeat Fail. Reverting to follower')
+                    # update our state
+                    self.update_term(new_term)
+                    self.state = new_state
+                    self.reset_timer()
+                else:
+                    logging.debug('Heartbeat success')
+            else:
+                logging.debug('RPC called on us during heartbeat. Cancelling result')            
+                    
     # append entries rpc
     def exposed_append_entries(self, term, leaderId):
+        logging.debug('AppendEntries RPC ' + str(term) + " " + str(leaderId))
         # lock our internal state
         with self.state_lock:
             # reject invalid requests
             if term < self.term:
-                print('Invalid leader detected')
+                logging.debug('\tReject Append: Invalid leader detected')
 
                 # notify of invalid term 
                 return(False, self.term)
             else:
-                print('Valid leader detected')
+                logging.debug('\tAccept Append: Valid leader detected')
                 
                 # convert us to follower state
-                self.state = self.FOLLOWER
+                self.state = self.FOLLOWER_STATE
 
                 # reset our timer
                 self.reset_timer()
 
                 # debug if new leader or not
                 if self.active_leader != leaderId:
-                    print("New leader detected : [" + str(leaderId) + ']' +
-                          ' - old : [' + str(self.active_leader) + "]")
+                    logging.debug("\tAppend: New leader detected : [" + str(leaderId) + ']' +
+                                  ' - old : [' + str(self.active_leader) + "]")
                 else:
-                    print('Same leader [' + str(leaderId) + ']')
+                    logging.debug('\tAppend: Same leader [' + str(leaderId) + ']')
 
                 # update the current leader
                 self.active_leader = leaderId
@@ -334,7 +427,6 @@ if __name__ == '__main__':
     t = threading.Thread(target=run_asynch, args=(node,))
     t.start()
     
-    print('Server running')
+    logging.debug('Server running')
     server = ThreadPoolServer(node, port=int(sys.argv[3]))
-    print('Hello')
     server.start()
