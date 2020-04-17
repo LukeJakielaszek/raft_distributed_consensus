@@ -1,0 +1,125 @@
+2020-04-16 18:09:44,120 - Node 3 - Creating term file
+2020-04-16 18:09:44,120 - Node 3 - Current Term : [0]
+2020-04-16 18:09:44,120 - Node 3 - Initialization complete
+2020-04-16 18:09:44,120 - Node 3 - Running server
+2020-04-16 18:09:44,120 - Node 3 - Server running
+2020-04-16 18:09:44,121 - Node 3 - server started on [0.0.0.0]:5004
+2020-04-16 18:09:44,132 - Node 3 - accepted ('127.0.0.1', 36630) with fd 5
+2020-04-16 18:09:44,132 - Node 3 - Created connection to 127.0.0.1:36630 with fd 5
+2020-04-16 18:09:44,535 - Node 3 - RequestVote RPC 3 1
+2020-04-16 18:09:44,535 - Node 3 - 	Accept: Candidate term larger - Voting for 1
+2020-04-16 18:09:44,535 - Node 3 - Updating term - old : 0| new : 3
+2020-04-16 18:09:44,635 - Node 3 - Closing connection for fd 5
+2020-04-16 18:09:45,181 - Node 3 - accepted ('127.0.0.1', 36642) with fd 5
+2020-04-16 18:09:45,182 - Node 3 - Created connection to 127.0.0.1:36642 with fd 5
+2020-04-16 18:09:45,429 - Node 3 - accepted ('127.0.0.1', 36644) with fd 6
+2020-04-16 18:09:45,430 - Node 3 - Created connection to 127.0.0.1:36644 with fd 6
+2020-04-16 18:09:45,444 - Node 3 - RequestVote RPC 3 1
+2020-04-16 18:09:45,444 - Node 3 - 	Reject: I have already voted 1
+2020-04-16 18:09:45,445 - Node 3 - Closing connection for fd 6
+2020-04-16 18:09:45,541 - Node 3 - RequestVote RPC 4 2
+2020-04-16 18:09:45,542 - Node 3 - 	Accept: Candidate term larger - Voting for 2
+2020-04-16 18:09:45,542 - Node 3 - Updating term - old : 3| new : 4
+2020-04-16 18:09:45,642 - Node 3 - Closing connection for fd 5
+2020-04-16 18:09:46,489 - Node 3 - accepted ('127.0.0.1', 36652) with fd 5
+2020-04-16 18:09:46,490 - Node 3 - Created connection to 127.0.0.1:36652 with fd 5
+2020-04-16 18:09:46,854 - Node 3 - AppendEntries RPC 5 2
+2020-04-16 18:09:46,854 - Node 3 - 	Accept Append: Valid leader detected
+2020-04-16 18:09:46,854 - Node 3 - 	Append: New leader detected : [2] - old : [None]
+2020-04-16 18:09:46,954 - Node 3 - Closing connection for fd 5
+2020-04-16 18:09:47,798 - Node 3 - accepted ('127.0.0.1', 36660) with fd 5
+2020-04-16 18:09:47,798 - Node 3 - Created connection to 127.0.0.1:36660 with fd 5
+2020-04-16 18:09:48,163 - Node 3 - AppendEntries RPC 5 2
+2020-04-16 18:09:48,163 - Node 3 - 	Accept Append: Valid leader detected
+2020-04-16 18:09:48,163 - Node 3 - 	Append: Same leader [2]
+2020-04-16 18:09:48,265 - Node 3 - Closing connection for fd 5
+2020-04-16 18:09:49,109 - Node 3 - accepted ('127.0.0.1', 36668) with fd 5
+2020-04-16 18:09:49,109 - Node 3 - Created connection to 127.0.0.1:36668 with fd 5
+2020-04-16 18:09:49,475 - Node 3 - AppendEntries RPC 5 2
+2020-04-16 18:09:49,475 - Node 3 - 	Accept Append: Valid leader detected
+2020-04-16 18:09:49,475 - Node 3 - 	Append: Same leader [2]
+2020-04-16 18:09:49,577 - Node 3 - Closing connection for fd 5
+2020-04-16 18:09:50,422 - Node 3 - accepted ('127.0.0.1', 36676) with fd 5
+2020-04-16 18:09:50,422 - Node 3 - Created connection to 127.0.0.1:36676 with fd 5
+2020-04-16 18:09:50,785 - Node 3 - AppendEntries RPC 5 2
+2020-04-16 18:09:50,786 - Node 3 - 	Accept Append: Valid leader detected
+2020-04-16 18:09:50,786 - Node 3 - 	Append: Same leader [2]
+2020-04-16 18:09:50,886 - Node 3 - Closing connection for fd 5
+2020-04-16 18:09:51,730 - Node 3 - accepted ('127.0.0.1', 36684) with fd 5
+2020-04-16 18:09:51,730 - Node 3 - Created connection to 127.0.0.1:36684 with fd 5
+2020-04-16 18:09:52,100 - Node 3 - AppendEntries RPC 5 2
+2020-04-16 18:09:52,100 - Node 3 - 	Accept Append: Valid leader detected
+2020-04-16 18:09:52,100 - Node 3 - 	Append: Same leader [2]
+2020-04-16 18:09:52,201 - Node 3 - Closing connection for fd 5
+2020-04-16 18:09:53,042 - Node 3 - accepted ('127.0.0.1', 36692) with fd 5
+2020-04-16 18:09:53,042 - Node 3 - Created connection to 127.0.0.1:36692 with fd 5
+2020-04-16 18:09:53,409 - Node 3 - AppendEntries RPC 5 2
+2020-04-16 18:09:53,409 - Node 3 - 	Accept Append: Valid leader detected
+2020-04-16 18:09:53,409 - Node 3 - 	Append: Same leader [2]
+2020-04-16 18:09:53,510 - Node 3 - Closing connection for fd 5
+2020-04-16 18:09:57,651 - Node 3 - Timout Detected
+2020-04-16 18:09:57,651 - Node 3 - Becoming a candidate
+2020-04-16 18:09:57,651 - Node 3 - Updating term - old : 4| new : 5
+2020-04-16 18:09:57,651 - Node 3 - Current Term : 5
+2020-04-16 18:09:57,975 - Node 3 - accepted ('127.0.0.1', 36700) with fd 5
+2020-04-16 18:09:57,975 - Node 3 - Created connection to 127.0.0.1:36700 with fd 5
+2020-04-16 18:09:58,153 - Node 3 - Starting request_vote multicast
+2020-04-16 18:09:58,346 - Node 3 - RequestVote RPC 6 1
+2020-04-16 18:09:58,346 - Node 3 - 	Accept: Candidate term larger - Voting for 1
+2020-04-16 18:09:58,346 - Node 3 - Updating term - old : 5| new : 6
+2020-04-16 18:09:58,447 - Node 3 - Closing connection for fd 5
+2020-04-16 18:09:58,581 - Node 3 - RPC called on us during requestVote multicast. Cancelling result
+2020-04-16 18:09:58,581 - Node 3 - 		Node : 3- Term : 6 - State : 0 - VCount : 1
+2020-04-16 18:09:58,892 - Node 3 - accepted ('127.0.0.1', 36716) with fd 5
+2020-04-16 18:09:58,893 - Node 3 - Created connection to 127.0.0.1:36716 with fd 5
+2020-04-16 18:09:59,254 - Node 3 - RequestVote RPC 6 1
+2020-04-16 18:09:59,254 - Node 3 - 	Reject: I have already voted 1
+2020-04-16 18:09:59,355 - Node 3 - Closing connection for fd 5
+2020-04-16 18:09:59,800 - Node 3 - accepted ('127.0.0.1', 36724) with fd 5
+2020-04-16 18:09:59,800 - Node 3 - Created connection to 127.0.0.1:36724 with fd 5
+2020-04-16 18:10:00,160 - Node 3 - RequestVote RPC 6 1
+2020-04-16 18:10:00,161 - Node 3 - 	Reject: I have already voted 1
+2020-04-16 18:10:00,261 - Node 3 - Closing connection for fd 5
+2020-04-16 18:10:01,588 - Node 3 - Timout Detected
+2020-04-16 18:10:01,588 - Node 3 - Becoming a candidate
+2020-04-16 18:10:01,588 - Node 3 - Updating term - old : 6| new : 7
+2020-04-16 18:10:01,588 - Node 3 - Current Term : 7
+2020-04-16 18:10:02,089 - Node 3 - Starting request_vote multicast
+2020-04-16 18:10:02,091 - Node 3 - No RPC called on us during requestVote multicast
+2020-04-16 18:10:02,091 - Node 3 - 		Node : 3- Term : 7 - State : 1 - VCount : 1
+2020-04-16 18:10:02,091 - Node 3 - 	requestVote RPC success. Continuing election
+2020-04-16 18:10:02,091 - Node 3 - 	Node already voted
+2020-04-16 18:10:02,091 - Node 3 - 		Node : 3- Term : 7 - State : 1 - VCount : 1
+2020-04-16 18:10:02,593 - Node 3 - Starting request_vote multicast
+2020-04-16 18:10:02,594 - Node 3 - No RPC called on us during requestVote multicast
+2020-04-16 18:10:02,594 - Node 3 - 		Node : 3- Term : 7 - State : 1 - VCount : 1
+2020-04-16 18:10:02,594 - Node 3 - 	requestVote RPC success. Continuing election
+2020-04-16 18:10:02,594 - Node 3 - 	Node already voted
+2020-04-16 18:10:02,594 - Node 3 - 		Node : 3- Term : 7 - State : 1 - VCount : 1
+2020-04-16 18:10:03,095 - Node 3 - Starting request_vote multicast
+2020-04-16 18:10:03,098 - Node 3 - No RPC called on us during requestVote multicast
+2020-04-16 18:10:03,098 - Node 3 - 		Node : 3- Term : 7 - State : 1 - VCount : 1
+2020-04-16 18:10:03,098 - Node 3 - 	requestVote RPC success. Continuing election
+2020-04-16 18:10:03,098 - Node 3 - 	Node already voted
+2020-04-16 18:10:03,098 - Node 3 - 		Node : 3- Term : 7 - State : 1 - VCount : 1
+2020-04-16 18:10:03,599 - Node 3 - Starting request_vote multicast
+2020-04-16 18:10:03,599 - Node 3 - No RPC called on us during requestVote multicast
+2020-04-16 18:10:03,599 - Node 3 - 		Node : 3- Term : 7 - State : 1 - VCount : 1
+2020-04-16 18:10:03,599 - Node 3 - 	requestVote RPC success. Continuing election
+2020-04-16 18:10:03,599 - Node 3 - 	Node already voted
+2020-04-16 18:10:03,600 - Node 3 - 		Node : 3- Term : 7 - State : 1 - VCount : 1
+2020-04-16 18:10:04,101 - Node 3 - Starting request_vote multicast
+2020-04-16 18:10:04,102 - Node 3 - No RPC called on us during requestVote multicast
+2020-04-16 18:10:04,102 - Node 3 - 		Node : 3- Term : 7 - State : 1 - VCount : 1
+2020-04-16 18:10:04,102 - Node 3 - 	requestVote RPC success. Continuing election
+2020-04-16 18:10:04,102 - Node 3 - 	Node already voted
+2020-04-16 18:10:04,102 - Node 3 - 		Node : 3- Term : 7 - State : 1 - VCount : 1
+2020-04-16 18:10:04,387 - Node 3 - keyboard interrupt!
+2020-04-16 18:10:04,387 - Node 3 - server has terminated
+2020-04-16 18:10:04,387 - Node 3 - listener closed
+2020-04-16 18:10:04,602 - Node 3 - Starting request_vote multicast
+2020-04-16 18:10:04,603 - Node 3 - No RPC called on us during requestVote multicast
+2020-04-16 18:10:04,604 - Node 3 - 		Node : 3- Term : 7 - State : 1 - VCount : 1
+2020-04-16 18:10:04,604 - Node 3 - 	requestVote RPC success. Continuing election
+2020-04-16 18:10:04,604 - Node 3 - 	Node already voted
+2020-04-16 18:10:04,604 - Node 3 - 		Node : 3- Term : 7 - State : 1 - VCount : 1

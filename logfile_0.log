@@ -1,55 +1,42 @@
-2020-04-16 18:00:39,782 - Node 0 - getting term from file
-2020-04-16 18:00:39,782 - Node 0 - Current Term : [54]
-2020-04-16 18:00:39,782 - Node 0 - Initialization complete
-2020-04-16 18:00:39,783 - Node 0 - Running server
-2020-04-16 18:00:39,783 - Node 0 - Server running
-2020-04-16 18:00:39,783 - Node 0 - server started on [0.0.0.0]:5001
-2020-04-16 18:00:44,293 - Node 0 - Timout Detected
-2020-04-16 18:00:44,293 - Node 0 - Becoming a candidate
-2020-04-16 18:00:44,293 - Node 0 - Updating term - old : 54| new : 55
-2020-04-16 18:00:44,294 - Node 0 - Current Term : 55
-2020-04-16 18:00:44,795 - Node 0 - Starting request_vote multicast
-2020-04-16 18:00:45,623 - Node 0 - No RPC called on us during requestVote multicast
-2020-04-16 18:00:45,624 - Node 0 - 		Node : 0- Term : 55 - State : 1 - VCount : 1
-2020-04-16 18:00:45,624 - Node 0 - 	requestVote RPC success. I won election. I am leader
-2020-04-16 18:00:45,625 - Node 0 - Updating term - old : 55| new : 55
-2020-04-16 18:00:45,627 - Node 0 - Updating term - old : 55| new : 56
-2020-04-16 18:00:45,628 - Node 0 - 		Node : 0- Term : 56 - State : 2 - VCount : 0
-2020-04-16 18:00:46,129 - Node 0 - Starting Heartbeat
-2020-04-16 18:00:46,857 - Node 0 - accepted ('127.0.0.1', 34942) with fd 6
-2020-04-16 18:00:46,858 - Node 0 - Created connection to 127.0.0.1:34942 with fd 6
-2020-04-16 18:00:46,930 - Node 0 - No RPC called on us during heartbeat
-2020-04-16 18:00:46,930 - Node 0 - Heartbeat success
-2020-04-16 18:00:47,248 - Node 0 - RequestVote RPC 56 2
-2020-04-16 18:00:47,248 - Node 0 - 	Accept: Participant Voting for 2
-2020-04-16 18:00:47,350 - Node 0 - Closing connection for fd 6
-2020-04-16 18:00:47,432 - Node 0 - Starting Heartbeat
-2020-04-16 18:00:47,837 - Node 0 - No RPC called on us during heartbeat
-2020-04-16 18:00:47,837 - Node 0 - Heartbeat success
-2020-04-16 18:00:48,339 - Node 0 - Starting Heartbeat
-2020-04-16 18:00:49,146 - Node 0 - No RPC called on us during heartbeat
-2020-04-16 18:00:49,146 - Node 0 - Heartbeat success
-2020-04-16 18:00:49,648 - Node 0 - Starting Heartbeat
-2020-04-16 18:00:50,458 - Node 0 - No RPC called on us during heartbeat
-2020-04-16 18:00:50,458 - Node 0 - Heartbeat success
-2020-04-16 18:00:50,960 - Node 0 - Starting Heartbeat
-2020-04-16 18:00:51,765 - Node 0 - No RPC called on us during heartbeat
-2020-04-16 18:00:51,766 - Node 0 - Heartbeat success
-2020-04-16 18:00:52,268 - Node 0 - Starting Heartbeat
-2020-04-16 18:00:53,075 - Node 0 - No RPC called on us during heartbeat
-2020-04-16 18:00:53,075 - Node 0 - Heartbeat success
-2020-04-16 18:00:53,577 - Node 0 - Starting Heartbeat
-2020-04-16 18:00:54,386 - Node 0 - No RPC called on us during heartbeat
-2020-04-16 18:00:54,386 - Node 0 - Heartbeat success
-2020-04-16 18:00:54,887 - Node 0 - Starting Heartbeat
-2020-04-16 18:00:55,695 - Node 0 - No RPC called on us during heartbeat
-2020-04-16 18:00:55,695 - Node 0 - Heartbeat success
-2020-04-16 18:00:56,196 - Node 0 - Starting Heartbeat
-2020-04-16 18:00:57,006 - Node 0 - No RPC called on us during heartbeat
-2020-04-16 18:00:57,007 - Node 0 - Heartbeat success
-2020-04-16 18:00:57,508 - Node 0 - Starting Heartbeat
-2020-04-16 18:00:57,767 - Node 0 - keyboard interrupt!
-2020-04-16 18:00:57,767 - Node 0 - server has terminated
-2020-04-16 18:00:57,767 - Node 0 - listener closed
-2020-04-16 18:00:58,314 - Node 0 - No RPC called on us during heartbeat
-2020-04-16 18:00:58,314 - Node 0 - Heartbeat success
+2020-04-16 18:09:24,139 - Node 0 - Creating term file
+2020-04-16 18:09:24,139 - Node 0 - Current Term : [0]
+2020-04-16 18:09:24,139 - Node 0 - Initialization complete
+2020-04-16 18:09:24,140 - Node 0 - Running server
+2020-04-16 18:09:24,140 - Node 0 - Server running
+2020-04-16 18:09:24,141 - Node 0 - server started on [0.0.0.0]:5001
+2020-04-16 18:09:27,145 - Node 0 - Timout Detected
+2020-04-16 18:09:27,146 - Node 0 - Becoming a candidate
+2020-04-16 18:09:27,146 - Node 0 - Updating term - old : 0| new : 1
+2020-04-16 18:09:27,146 - Node 0 - Current Term : 1
+2020-04-16 18:09:27,648 - Node 0 - Starting request_vote multicast
+2020-04-16 18:09:28,494 - Node 0 - No RPC called on us during requestVote multicast
+2020-04-16 18:09:28,494 - Node 0 - 		Node : 0- Term : 1 - State : 1 - VCount : 1
+2020-04-16 18:09:28,494 - Node 0 - 	requestVote RPC success. I won election. I am leader
+2020-04-16 18:09:28,494 - Node 0 - Vote count [3] Threshold [3]
+2020-04-16 18:09:28,494 - Node 0 - Updating term - old : 1| new : 1
+2020-04-16 18:09:28,494 - Node 0 - Updating term - old : 1| new : 2
+2020-04-16 18:09:28,495 - Node 0 - 		Node : 0- Term : 2 - State : 2 - VCount : 0
+2020-04-16 18:09:28,996 - Node 0 - Starting Heartbeat
+2020-04-16 18:09:29,805 - Node 0 - No RPC called on us during heartbeat
+2020-04-16 18:09:29,806 - Node 0 - Heartbeat success
+2020-04-16 18:09:30,307 - Node 0 - Starting Heartbeat
+2020-04-16 18:09:31,121 - Node 0 - No RPC called on us during heartbeat
+2020-04-16 18:09:31,122 - Node 0 - Heartbeat success
+2020-04-16 18:09:31,623 - Node 0 - Starting Heartbeat
+2020-04-16 18:09:32,430 - Node 0 - No RPC called on us during heartbeat
+2020-04-16 18:09:32,430 - Node 0 - Heartbeat success
+2020-04-16 18:09:32,932 - Node 0 - Starting Heartbeat
+2020-04-16 18:09:33,743 - Node 0 - No RPC called on us during heartbeat
+2020-04-16 18:09:33,743 - Node 0 - Heartbeat success
+2020-04-16 18:09:34,245 - Node 0 - Starting Heartbeat
+2020-04-16 18:09:34,950 - Node 0 - No RPC called on us during heartbeat
+2020-04-16 18:09:34,950 - Node 0 - Heartbeat success
+2020-04-16 18:09:35,452 - Node 0 - Starting Heartbeat
+2020-04-16 18:09:35,936 - Node 0 - keyboard interrupt!
+2020-04-16 18:09:35,936 - Node 0 - server has terminated
+2020-04-16 18:09:35,936 - Node 0 - listener closed
+2020-04-16 18:09:36,163 - Node 0 - No RPC called on us during heartbeat
+2020-04-16 18:09:36,163 - Node 0 - Heartbeat success
+2020-04-16 18:09:36,664 - Node 0 - Starting Heartbeat
+2020-04-16 18:09:37,366 - Node 0 - No RPC called on us during heartbeat
+2020-04-16 18:09:37,366 - Node 0 - Heartbeat success
